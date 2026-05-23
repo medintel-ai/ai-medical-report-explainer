@@ -2,11 +2,10 @@ import axios from "axios";
 
 export async function uploadMedicalReport(file: File) {
   const formData = new FormData();
-
   formData.append("file", file);
 
   const response = await axios.post(
-    "http://localhost:8000/api/upload",
+    "http://127.0.0.1:8000/api/upload",
     formData,
     {
       headers: {

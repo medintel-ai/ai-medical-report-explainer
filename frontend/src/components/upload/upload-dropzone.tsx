@@ -3,17 +3,26 @@
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { UploadCloud, FileText } from "lucide-react";
+import { uploadMedicalReport } from "@/services/upload-services";
 
 export function UploadDropzone() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+  const file = acceptedFiles[0];
+  if (!file) return;
 
-    if (file) {
-      setUploadedFile(file);
-    }
-  }, []);
+  setUploadedFile(file);
+
+  try {
+    const result = await uploadMedicalReport(file);
+    console.log("Backend response:", result);
+    alert(`File uploaded: ${result.filename}`);
+  } catch (err) {
+    console.error(err);
+    alert("Upload failed. Check backend.");
+  }
+}, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
