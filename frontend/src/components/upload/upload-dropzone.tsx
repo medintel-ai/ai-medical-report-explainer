@@ -2,27 +2,32 @@
 
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { UploadCloud, FileText } from "lucide-react";
+import { UploadCloud, FileText, Check } from "lucide-react";
 import { uploadMedicalReport } from "@/services/upload-services";
 
 export function UploadDropzone() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [extractedText, setExtractedText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
-  const file = acceptedFiles[0];
-  if (!file) return;
+    const file = acceptedFiles[0];
+    if (!file) return;
 
-  setUploadedFile(file);
+    setUploadedFile(file);
+    setIsLoading(true);
 
-  try {
-    const result = await uploadMedicalReport(file);
-    console.log("Backend response:", result);
-    alert(`File uploaded: ${result.filename}`);
-  } catch (err) {
-    console.error(err);
-    alert("Upload failed. Check backend.");
-  }
-}, []);
+    try {
+      const result = await uploadMedicalReport(file);
+      setExtractedText(result.extracted_text);
+      console.log("Backend response:", result);
+    } catch (err) {
+      console.error(err);
+      alert("Upload failed. Check backend.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -62,21 +67,46 @@ export function UploadDropzone() {
       </div>
 
       {uploadedFile && (
-        <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-          <div className="flex items-center gap-4">
-            <FileText className="h-10 w-10 text-white" />
-
-            <div>
-              <h4 className="font-medium text-white">
-                {uploadedFile.name}
-              </h4>
-
-              <p className="text-sm text-zinc-400">
-                {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
-              </p>
+        <>
+          <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <FileText className="h-10 w-10 text-white" />
+                <div>
+                  <h4 className="font-medium text-white">
+                    {uploadedFile.name}
+                  </h4>
+                  <p className="text-sm text-zinc-400">
+                    {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
+                  </p>
+                </div>
+              </div>
+              {!isLoading && extractedText && (
+                <Check className="h-6 w-6 text-green-500" />
+              )}
             </div>
           </div>
-        </div>
+
+          {isLoading && (
+            <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+              <p className="text-center text-zinc-400">
+                Processing your document...
+              </p>
+            </div>
+          )}
+
+          {extractedText && (
+            <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+              <h3 className="mb-4 text-xl font-semibold text-white">
+                Extracted Medical Text
+              </h3>
+
+              <div className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-xl bg-black p-4 text-sm leading-7 text-zinc-300">
+                {extractedText}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
