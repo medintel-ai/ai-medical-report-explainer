@@ -26,12 +26,12 @@ export function HeroSection() {
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <button className="rounded-2xl bg-white px-8 py-4 font-medium text-black transition hover:opacity-90">
+            <button type="button" className="rounded-2xl bg-white px-8 py-4 font-medium text-black transition hover:opacity-90">
               Upload Report
             </button>
             <UploadDropzone />
 
-            <button className="rounded-2xl border border-zinc-700 px-8 py-4 font-medium text-white transition hover:bg-zinc-900">
+            <button  type="button" className="rounded-2xl border border-zinc-700 px-8 py-4 font-medium text-white transition hover:bg-zinc-900">
               View Architecture
             </button>
           </div>
