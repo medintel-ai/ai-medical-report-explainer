@@ -20,7 +20,7 @@ async def upload_medical_report(
     extracted_text = extract_text_from_pdf(filepath)
 
     return {
-        "filename": file.filename,
-        "saved_path": filepath,
-        "extracted_text": extracted_text[:3000]
-    }
+    "filename": file.filename,
+    "saved_path": filepath,
+    "extracted_text": extracted_text
+}
