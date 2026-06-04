@@ -1,39 +1,45 @@
+import Link from "next/link";
+
 export function Navbar() {
   return (
-    <header className="border-b border-zinc-800 bg-black/80 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight text-white">
-            MedIntel AI
-          </h1>
-        </div>
+    <header className="sticky top-0 z-50 border-b border-zinc-800/60 bg-black/70 backdrop-blur-md">
+      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
 
-        <nav className="hidden gap-8 md:flex">
-          <a
-            href="#features"
-            className="text-sm text-zinc-400 transition hover:text-white"
-          >
-            Features
-          </a>
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 group">
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white">
+            <span className="h-3 w-3 rounded-sm bg-black" />
+          </span>
+          <span className="text-sm font-semibold tracking-tight text-white">
+            MedIntel <span className="text-zinc-400">AI</span>
+          </span>
+        </Link>
 
-          <a
-            href="#architecture"
-            className="text-sm text-zinc-400 transition hover:text-white"
-          >
-            Architecture
-          </a>
-
-          <a
-            href="#roadmap"
-            className="text-sm text-zinc-400 transition hover:text-white"
-          >
-            Roadmap
-          </a>
+        {/* Nav links */}
+        <nav className="hidden items-center gap-7 md:flex">
+          {[
+            { label: "Features", href: "#features" },
+            { label: "Architecture", href: "#architecture" },
+            { label: "Roadmap", href: "#roadmap" },
+          ].map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="text-sm text-zinc-400 transition hover:text-white"
+            >
+              {item.label}
+            </a>
+          ))}
         </nav>
 
-        <button className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-black transition hover:opacity-90">
+        {/* CTA */}
+        <Link
+          href="/dashboard"
+          className="rounded-lg bg-white px-4 py-1.5 text-sm font-medium text-black transition hover:bg-zinc-100"
+        >
           Dashboard
-        </button>
+        </Link>
+
       </div>
     </header>
   );

@@ -1,13 +1,13 @@
-from mistralai import Mistral
+from openai import OpenAI
 import os
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
-api_key = os.getenv("MISTRAL_API_KEY")
+api_key = os.getenv("OPENAI_API_KEY")
 
-client = Mistral(api_key=api_key)
+client = OpenAI(api_key=api_key)
 
 
 def explain_medical_report(report_text: str):
@@ -31,8 +31,8 @@ MEDICAL REPORT:
 {report_text}
 """
 
-    response = client.chat.complete(
-        model="mistral-large-latest",
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
         messages=[
             {
                 "role": "user",

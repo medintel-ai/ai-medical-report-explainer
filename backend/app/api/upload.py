@@ -25,15 +25,8 @@ async def upload_medical_report(
     )
 
     return {
-<<<<<<< HEAD
-    "filename": file.filename,
-    "saved_path": filepath,
-    "extracted_text": extracted_text
-}
-=======
         "filename": file.filename,
         "saved_path": filepath,
         "extracted_text": extracted_text,
-        
+        "ai_explanation": ai_explanation
     }
->>>>>>> b78d5e17574b00b5da0356770f1d5ffd07514c7c
